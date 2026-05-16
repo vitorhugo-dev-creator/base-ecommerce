@@ -31,7 +31,7 @@ function AdminLayout() {
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', fontWeight: 600 }}>
             {currentPage === 'dashboard' ? 'Dashboard' : currentPage === 'products' ? 'Produtos' : currentPage === 'orders' ? 'Pedidos' : currentPage === 'settings' ? 'Configurações' : 'Dashboard'}
           </h1>
-          <a href="/vitordev" target="_blank" className="store-link-btn">
+          <a href="/" target="_blank" className="store-link-btn">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             Ver Loja
           </a>
