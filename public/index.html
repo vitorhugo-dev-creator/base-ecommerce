@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Loja</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <span class="navbar-brand" id="store-name-nav">Loja</span>
+    </div>
+    <ul class="navbar-links">
+      <li><a href="/">Início</a></li>
+      <li><a href="/catalogo">Catálogo</a></li>
+      <li><a href="/rastreio">Rastreio</a></li>
+    </ul>
+    <div class="navbar-right">
+      <div class="cart-toggle" id="cart-toggle" onclick="toggleCart()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge" id="cart-count">0</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-line"></span>
+        <span id="hero-subtitle">Qualidade e estilo para você</span>
+        <span class="hero-eyebrow-line"></span>
+      </div>
+      <h1 class="hero-title" id="hero-title">Descubra nossos produtos</h1>
+      <p class="hero-description" id="store-description">Bem-vindo à nossa loja!</p>
+      <div class="hero-actions">
+        <a href="/catalogo" class="btn-hero">
+          <span>Explorar Catálogo</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="/rastreio" class="btn-ghost-sm">Rastrear Pedido</a>
+      </div>
+    </div>
+    <div class="hero-decoration">
+      <div class="hero-circle hero-circle-1"></div>
+      <div class="hero-circle hero-circle-2"></div>
+      <div class="hero-circle hero-circle-3"></div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-label">Novidades</div>
+        <h2 class="section-title">Produtos em Destaque</h2>
+      </div>
+      <a href="/catalogo" class="section-link">
+        Ver todos
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+    <div class="products-grid" id="featured-products">
+      <div class="loading-state">
+        <div class="loading-spinner"></div>
+        <p>Carregando produtos...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features-section">
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Compra Segura</h3>
+        <p>Dados protegidos e pagamento 100% seguro</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3>Entrega Rápida</h3>
+        <p>Envio em até 48h após confirmação</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        </div>
+        <h3>Suporte Direto</h3>
+        <p>Atendimento rápido via WhatsApp</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand-row">
+        <span class="footer-brand" id="store-name-footer">Loja</span>
+        <span class="footer-brand-line"></span>
+      </div>
+      <p class="footer-tagline">Feito com intenção. Entregue com cuidado.</p>
+      <div class="footer-nav">
+        <a href="/">Início</a>
+        <span class="footer-sep">·</span>
+        <a href="/catalogo">Catálogo</a>
+        <span class="footer-sep">·</span>
+        <a href="/rastreio">Rastrear Pedido</a>
+      </div>
+      <div class="footer-copy">© 2025 — Todos os direitos reservados</div>
+    </div>
+  </footer>
+
+  <!-- PRODUCT MODAL -->
+  <div class="modal-overlay" id="product-modal" onclick="closeModal(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="modal-image-wrap">
+        <img id="modal-img" src="" alt="">
+      </div>
+      <div class="modal-body">
+        <div class="modal-meta">
+          <span class="modal-category" id="modal-category"></span>
+        </div>
+        <h2 class="modal-title" id="modal-name"></h2>
+        <p class="modal-desc" id="modal-desc"></p>
+        <div class="modal-price-wrap">
+          <span class="modal-price" id="modal-price"></span>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-primary-full" id="modal-add-cart">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            Adicionar ao Carrinho
+          </button>
+          <button class="btn-whatsapp" id="modal-whatsapp">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CART DRAWER -->
+  <div class="cart-backdrop" id="cart-backdrop" onclick="toggleCart()"></div>
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <div class="cart-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <h3>Carrinho</h3>
+      </div>
+      <button class="cart-close" onclick="toggleCart()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="cart-items" id="cart-items"></div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span class="cart-total-label">Total</span>
+        <span class="cart-total-value" id="cart-total">R$ 0,00</span>
+      </div>
+      <div id="checkout-section">
+        <button class="btn-checkout" onclick="showCheckout()">
+          <span>Finalizar Pedido</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+      <div id="checkout-form-section" class="hidden">
+        <div class="checkout-form">
+          <div class="checkout-field">
+            <label>Nome completo *</label>
+            <input type="text" id="c-name" placeholder="Seu nome completo">
+          </div>
+          <div class="checkout-row">
+            <div class="checkout-field">
+              <label>E-mail</label>
+              <input type="email" id="c-email" placeholder="email@exemplo.com">
+            </div>
+            <div class="checkout-field">
+              <label>WhatsApp</label>
+              <input type="tel" id="c-phone" placeholder="(00) 00000-0000">
+            </div>
+          </div>
+          <div class="checkout-field">
+            <label>Endereço de entrega</label>
+            <input type="text" id="c-address" placeholder="Rua, número, bairro, cidade - UF">
+          </div>
+          <div class="checkout-field">
+            <label>Forma de pagamento</label>
+            <select id="c-payment">
+              <option value="pix">PIX — à vista</option>
+              <option value="whatsapp">Combinar via WhatsApp</option>
+            </select>
+          </div>
+          <div class="checkout-field">
+            <label>Observações</label>
+            <textarea id="c-notes" placeholder="Alguma observação? Cor, tamanho, prazo..." rows="2"></textarea>
+          </div>
+        </div>
+        <button class="btn-checkout" onclick="submitOrder()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Confirmar Pedido
+        </button>
+        <button class="btn-back" onclick="cancelCheckout()">← Voltar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

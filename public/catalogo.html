@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <span class="navbar-brand" id="store-name-nav">Loja</span>
+    <ul class="navbar-links">
+      <li><a href="/">Início</a></li>
+      <li><a href="/catalogo">Catálogo</a></li>
+      <li><a href="/rastreio">Rastrear Pedido</a></li>
+    </ul>
+    <div class="navbar-cart" onclick="toggleCart()">
+      Carrinho
+      <span class="cart-count" id="cart-count">0</span>
+    </div>
+  </nav>
+
+  <div class="section">
+    <h2 class="section-title">Catálogo</h2>
+
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Buscar produtos..." oninput="filterProducts()">
+    </div>
+
+    <div class="filters" id="category-filters">
+      <button class="filter-btn active" onclick="setCategory(null, this)">Todos</button>
+    </div>
+
+    <div class="products-grid" id="products-grid">
+      <div class="empty-state"><p>Carregando...</p></div>
+    </div>
+  </div>
+
+  <footer>
+    <span id="store-name-footer">Loja</span> — Todos os direitos reservados
+  </footer>
+
+  <!-- MODAL DE PRODUTO -->
+  <div class="modal-overlay" id="product-modal" onclick="closeModal(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <div class="modal-image"><img id="modal-img" src="" alt=""></div>
+      <div class="modal-body">
+        <p class="modal-category" id="modal-category"></p>
+        <h2 class="modal-title" id="modal-name"></h2>
+        <p class="modal-description" id="modal-desc"></p>
+        <div class="modal-price" id="modal-price"></div>
+        <div class="modal-actions">
+          <button class="btn btn-primary" id="modal-add-cart">Adicionar ao Carrinho</button>
+          <button class="btn" id="modal-whatsapp">Comprar via WhatsApp</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARRINHO LATERAL -->
+  <div class="overlay-backdrop" id="cart-backdrop" onclick="toggleCart()"></div>
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-drawer-header">
+      <h3>Carrinho</h3>
+      <button class="modal-close" onclick="toggleCart()">×</button>
+    </div>
+    <div class="cart-items" id="cart-items"></div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total</span>
+        <span class="cart-total-value" id="cart-total">R$ 0,00</span>
+      </div>
+      <div id="checkout-section">
+        <button class="btn btn-primary" style="width:100%;margin-bottom:0.5rem" onclick="showCheckout()">Finalizar Pedido</button>
+      </div>
+      <div id="checkout-form-section" class="hidden">
+        <div class="checkout-form">
+          <input type="text" id="c-name" placeholder="Seu nome completo">
+          <input type="email" id="c-email" placeholder="E-mail">
+          <input type="tel" id="c-phone" placeholder="WhatsApp">
+          <input type="text" id="c-address" placeholder="Endereço para entrega">
+          <select id="c-payment">
+            <option value="pix">PIX</option>
+            <option value="whatsapp">Combinar via WhatsApp</option>
+          </select>
+          <textarea id="c-notes" placeholder="Observações (opcional)" rows="2"></textarea>
+        </div>
+        <button class="btn btn-primary" style="width:100%;margin-bottom:0.5rem" onclick="submitOrder()">Confirmar Pedido</button>
+        <button class="btn" style="width:100%" onclick="cancelCheckout()">Voltar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/main.js"></script>
+  <script>
+    // Inicialização específica do catálogo
+    window.addEventListener('DOMContentLoaded', async () => {
+      await loadStoreConfig();
+      await loadAllProducts();
+    });
+  </script>
+</body>
+</html>

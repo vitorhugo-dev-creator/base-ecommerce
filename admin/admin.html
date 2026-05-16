@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin</title>
+  <link rel="stylesheet" href="/admin-assets/css/admin.css">
+</head>
+<body>
+
+<div class="admin-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <div class="sidebar-title-wrap">
+        <span class="sidebar-name" id="sidebar-store-name">Painel Admin</span>
+        <span class="sidebar-sub">Gerenciamento</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu</div>
+      <div class="nav-item active" onclick="navigateTo('dashboard')" data-page="dashboard">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        </span>
+        Dashboard
+      </div>
+      <div class="nav-item" onclick="navigateTo('products')" data-page="products">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        </span>
+        Produtos
+      </div>
+      <div class="nav-item" onclick="navigateTo('orders')" data-page="orders">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </span>
+        Pedidos
+      </div>
+      <div class="nav-item" onclick="navigateTo('settings')" data-page="settings">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </span>
+        Configurações
+      </div>
+      <div class="nav-item" onclick="navigateTo('analytics')" data-page="analytics">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </span>
+        CRM Analytics
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn btn-danger" style="width:100%" onclick="doLogout()">
+        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sair
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="admin-main">
+    <div class="topbar">
+      <div class="topbar-title-wrap">
+        <div class="page-icon" id="topbar-icon"></div>
+        <h1 id="topbar-title">Dashboard</h1>
+      </div>
+      <div class="topbar-actions">
+        <a href="/" target="_blank" class="store-link-btn">
+          <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Ver Loja
+        </a>
+      </div>
+    </div>
+
+    <div class="content-area">
+
+      <!-- ===== DASHBOARD ===== -->
+      <section class="admin-section active" id="section-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="stat-label">Total de Pedidos</div>
+            <div class="stat-value" id="stat-orders">—</div>
+            <div class="stat-sub">pedidos realizados</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div class="stat-label">Receita Confirmada</div>
+            <div class="stat-value" id="stat-revenue">—</div>
+            <div class="stat-sub">em pagamentos pagos</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            </div>
+            <div class="stat-label">Produtos Ativos</div>
+            <div class="stat-value" id="stat-products">—</div>
+            <div class="stat-sub">produtos no catálogo</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="stat-label">Pedidos Pendentes</div>
+            <div class="stat-value" id="stat-pending">—</div>
+            <div class="stat-sub">aguardando ação</div>
+          </div>
+        </div>
+
+        <div class="section-header">
+          <h2 class="section-title">Pedidos Recentes</h2>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Cliente</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Data</th>
+              </tr>
+            </thead>
+            <tbody id="recent-orders-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===== PRODUTOS ===== -->
+      <section class="admin-section" id="section-products">
+        <div class="toolbar">
+          <input type="text" class="search-input" id="product-search" placeholder="Buscar produto..." oninput="filterAdminProducts()">
+          <button class="btn btn-primary" onclick="openProductModal()">
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Novo Produto
+          </button>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Imagem</th><th>Nome</th><th>Categoria</th><th>Preço</th><th>Promo</th><th>Status</th><th>Ações</th></tr>
+            </thead>
+            <tbody id="products-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===== PEDIDOS ===== -->
+      <section class="admin-section" id="section-orders">
+        <div class="toolbar">
+          <input type="text" class="search-input" id="order-search" placeholder="Buscar pedido ou cliente..." oninput="filterAdminOrders()">
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Código</th><th>Cliente</th><th>Total</th><th>Pagamento</th><th>Status</th><th>Data</th><th>Ações</th></tr>
+            </thead>
+            <tbody id="orders-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===== CONFIGURAÇÕES ===== -->
+      <section class="admin-section" id="section-settings">
+        <div style="max-width:680px">
+
+          <div class="table-wrapper" style="padding:1.75rem">
+            <h3 class="section-title" style="margin-bottom:1.5rem">Configurações da Loja</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Nome da Loja</label>
+                <input type="text" id="set-store_name">
+              </div>
+              <div class="form-group">
+                <label>WhatsApp (DDI + DDD + número)</label>
+                <input type="text" id="set-store_whatsapp" placeholder="5547999999999">
+              </div>
+              <div class="form-group full">
+                <label>Descrição da Loja</label>
+                <input type="text" id="set-store_description">
+              </div>
+              <div class="form-group full">
+                <label>Título do Hero</label>
+                <input type="text" id="set-hero_title">
+              </div>
+              <div class="form-group full">
+                <label>Subtítulo do Hero</label>
+                <input type="text" id="set-hero_subtitle">
+              </div>
+              <div class="form-group full">
+                <label>Chave PIX</label>
+                <input type="text" id="set-store_pix_key" placeholder="email@dominio.com ou CPF/CNPJ">
+              </div>
+              <div class="form-group">
+                <label>Cor de Fundo</label>
+                <input type="color" id="set-bg_color">
+              </div>
+              <div class="form-group">
+                <label>Cor de Destaque</label>
+                <input type="color" id="set-accent_color">
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="saveSettings()">Salvar Configurações</button>
+          </div>
+
+          <div class="table-wrapper" style="padding:1.75rem;margin-top:1.5rem">
+            <h3 class="section-title" style="margin-bottom:1.5rem">Segurança</h3>
+            <div class="form-grid">
+              <div class="form-group full">
+                <label>Nova Senha Admin</label>
+                <input type="password" id="new-password" placeholder="Mínimo 6 caracteres">
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="changePassword()">Alterar Senha</button>
+          </div>
+        </div>
+      </section>
+
+    <!-- ===== CRM ANALYTICS ===== -->
+      <section class="admin-section" id="section-analytics">
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:1rem;margin-bottom:2rem" id="analytics-kpi-grid"></div>
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:1rem;margin-bottom:1.5rem">
+          <div class="analytics-card">
+            <div class="analytics-card-header">
+              <div>
+                <div class="analytics-card-title">Faturamento Mensal</div>
+                <div class="analytics-card-sub">Receita por mês</div>
+              </div>
+            </div>
+            <div class="analytics-bar-chart" id="analytics-monthly-chart"></div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-card-header">
+              <div>
+                <div class="analytics-card-title">Pedidos por Dia</div>
+                <div class="analytics-card-sub">Últimos 30 dias</div>
+              </div>
+            </div>
+            <div class="analytics-dots-chart" id="analytics-daily-chart"></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+          <div class="analytics-card">
+            <div class="analytics-card-header">
+              <div>
+                <div class="analytics-card-title">Produtos Mais Vendidos</div>
+                <div class="analytics-card-sub">Por quantidade</div>
+              </div>
+            </div>
+            <div class="analytics-rank-list" id="analytics-top-products"></div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-card-header">
+              <div>
+                <div class="analytics-card-title">Métodos de Pagamento</div>
+                <div class="analytics-card-sub">Distribuição</div>
+              </div>
+            </div>
+            <div class="analytics-donut-wrap" id="analytics-payment-donut"></div>
+            <div class="analytics-legend" id="analytics-payment-legend"></div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-card-header">
+              <div>
+                <div class="analytics-card-title">Status dos Pedidos</div>
+                <div class="analytics-card-sub">Visão geral</div>
+              </div>
+            </div>
+            <div class="analytics-status-rings" id="analytics-status-rings"></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 2fr;gap:1rem">
+          <div class="analytics-card">
+            <div class="analytics-card-header">
+              <div>
+                <div class="analytics-card-title">Top Clientes</div>
+                <div class="analytics-card-sub">Por volume</div>
+              </div>
+            </div>
+            <div class="analytics-rank-list analytics-rank-list--gold" id="analytics-top-customers"></div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-card-header">
+              <div>
+                <div class="analytics-card-title">Performance de Produtos</div>
+                <div class="analytics-card-sub">Receita por item</div>
+              </div>
+            </div>
+            <div class="analytics-hbars" id="analytics-perf-bars"></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- MODAL PRODUTO -->
+<div class="modal-overlay" id="product-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="product-modal-title">Novo Produto</h3>
+      <button class="modal-close" onclick="closeProductModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-product-id">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Nome do Produto *</label>
+          <input type="text" id="p-name" placeholder="Ex: Camiseta Oversized Preta" required>
+        </div>
+        <div class="form-group full">
+          <label>Descrição</label>
+          <textarea id="p-description" rows="3" placeholder="Descrição detalhada do produto"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Categoria</label>
+          <input type="text" id="p-category" placeholder="Ex: Camisetas, Acessórios">
+        </div>
+        <div class="form-group">
+          <label>Preço (R$)</label>
+          <input type="number" id="p-price" step="0.01" min="0" placeholder="49.90">
+        </div>
+        <div class="form-group">
+          <label>Desconto (%)</label>
+          <input type="number" id="p-promo" min="0" max="99" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label>Tags (separadas por vírgula)</label>
+          <input type="text" id="p-tags" placeholder="rock, estampada, preta">
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="p-active">
+            <option value="1">Ativo</option>
+            <option value="0">Inativo</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Imagem Principal</label>
+          <input type="file" id="p-image" accept="image/*" onchange="previewImage(this)">
+          <img id="p-image-preview" class="image-preview" style="margin-top:0.5rem;display:none">
+        </div>
+        <div class="form-group full">
+          <label>Imagens Extras (até 5)</label>
+          <input type="file" id="p-extra-images" accept="image/*" multiple>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeProductModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveProduct()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PEDIDO -->
+<div class="modal-overlay" id="order-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="order-modal-code">Pedido</h3>
+      <button class="modal-close" onclick="closeOrderModal()">×</button>
+    </div>
+    <div class="modal-body" id="order-modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeOrderModal()">Fechar</button>
+      <button class="btn btn-primary" onclick="saveOrderStatus()">Salvar Status</button>
+    </div>
+  </div>
+</div>
+
+<script src="/admin-assets/js/admin.js"></script>
+</body>
+</html>

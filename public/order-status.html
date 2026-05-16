@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rastrear Pedido</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .track-container {
+      max-width: 500px;
+      margin: 4rem auto;
+      padding: 0 1rem;
+    }
+    .track-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      border-radius: 2px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .status-pending  { background: #3d3000; color: #ffcc00; }
+    .status-paid     { background: #003d00; color: #00cc66; }
+    .status-shipped  { background: #003050; color: #00aaff; }
+    .status-delivered{ background: #002a00; color: #66ff66; }
+    .status-cancelled{ background: #3d0000; color: #ff6666; }
+    .order-items { margin-top: 1rem; }
+    .order-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .order-item:last-child { border-bottom: none; }
+    .order-label {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 1rem;
+      margin-bottom: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a class="navbar-brand" href="/" id="store-name-nav">Loja</a>
+    <ul class="navbar-links">
+      <li><a href="/">Início</a></li>
+      <li><a href="/catalogo">Catálogo</a></li>
+    </ul>
+    <div></div>
+  </nav>
+
+  <div class="track-container">
+    <h2 class="section-title">Rastrear Pedido</h2>
+
+    <div style="display:flex;gap:0.5rem;margin-top:1.5rem">
+      <input type="text" id="order-code-input" placeholder="Digite o código do pedido (ex: PED-ABC123)"
+        style="flex:1;background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:0.7rem 1rem;border-radius:var(--radius);font-size:0.9rem">
+      <button class="btn btn-primary" onclick="trackOrder()">Buscar</button>
+    </div>
+
+    <div id="order-result"></div>
+  </div>
+
+  <footer>
+    <span id="store-name-footer">Loja</span> — Todos os direitos reservados
+  </footer>
+
+  <script src="/js/main.js"></script>
+  <script>
+    async function trackOrder() {
+      const code = document.getElementById('order-code-input').value.trim().toUpperCase();
+      if (!code) return;
+      const result = document.getElementById('order-result');
+      result.innerHTML = '<p style="color:var(--text-muted);margin-top:1rem">Buscando...</p>';
+
+      try {
+        const res = await fetch(`/api/orders/track/${code}`);
+        if (!res.ok) throw new Error('Pedido não encontrado');
+        const order = await res.json();
+
+        const statusLabels = {
+          pending: 'Aguardando', paid: 'Pago', shipped: 'Enviado',
+          delivered: 'Entregue', cancelled: 'Cancelado'
+        };
+        const paymentLabels = {
+          pending: 'Aguardando pagamento', paid: 'Pago', failed: 'Falhou'
+        };
+
+        result.innerHTML = `
+          <div class="track-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+              <strong>${order.order_code}</strong>
+              <span class="status-badge status-${order.order_status}">${statusLabels[order.order_status] || order.order_status}</span>
+            </div>
+
+            <p class="order-label">Cliente</p>
+            <p>${order.customer_name}</p>
+
+            <p class="order-label">Pagamento</p>
+            <p>${paymentLabels[order.payment_status] || order.payment_status}</p>
+
+            <p class="order-label">Itens</p>
+            <div class="order-items">
+              ${order.items.map(i => `
+                <div class="order-item">
+                  <span>${i.name} × ${i.qty}</span>
+                  <span>R$ ${(i.price * i.qty).toFixed(2).replace('.', ',')}</span>
+                </div>
+              `).join('')}
+            </div>
+
+            <div style="display:flex;justify-content:space-between;margin-top:1rem;font-weight:bold">
+              <span>Total</span>
+              <span style="color:var(--accent)">R$ ${order.total.toFixed(2).replace('.', ',')}</span>
+            </div>
+
+            <p class="order-label">Data do pedido</p>
+            <p>${new Date(order.created_at).toLocaleDateString('pt-BR')}</p>
+          </div>
+        `;
+      } catch (err) {
+        result.innerHTML = `<div class="track-card"><p style="color:var(--text-muted)">${err.message}</p></div>`;
+      }
+    }
+
+    document.getElementById('order-code-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') trackOrder();
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStoreConfig();
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('code')) {
+        document.getElementById('order-code-input').value = params.get('code');
+        trackOrder();
+      }
+    });
+  </script>
+</body>
+</html>
