@@ -17,6 +17,15 @@ const nodemailer = require('nodemailer');
 const app = express();
 const PORT = process.env.PORT || 3002;
 
+// CORS - permitir todas as origens em produção
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') return res.sendStatus(200);
+  next();
+});
+
 // Rate limiting simples em memória (5 tentativas/minuto por IP)
 const loginAttempts = new Map();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minuto
