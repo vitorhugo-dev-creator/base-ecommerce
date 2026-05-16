@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
+const API_URL = 'https://base-ecommerce-production.up.railway.app'
+
 export default function Settings() {
   const [form, setForm] = useState({
     store_name: '', store_description: '', hero_title: '', hero_subtitle: '',
@@ -10,7 +12,7 @@ export default function Settings() {
   const [passwords, setPasswords] = useState({ current: '', newPass: '', confirm: '' })
 
   useEffect(() => {
-    fetch('/api/settings').then(r => r.json()).then(s => setForm({
+    fetch(`${API_URL}/api/settings`).then(r => r.json()).then(s => setForm({
       store_name: s.store_name || '', store_description: s.store_description || '',
       hero_title: s.hero_title || '', hero_subtitle: s.hero_subtitle || '',
       store_whatsapp: s.store_whatsapp || '', store_pix_key: s.store_pix_key || ''
@@ -25,7 +27,7 @@ export default function Settings() {
   async function saveSettings() {
     setSaving(true)
     try {
-      const res = await fetch('/api/admin/settings', {
+      const res = await fetch(`${API_URL}/api/admin/settings`, {
         method: 'PUT', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
         credentials: 'include'
@@ -43,7 +45,7 @@ export default function Settings() {
     if (newPass !== confirm) return showToast('As senhas nao coincidem', 'error')
     setSaving(true)
     try {
-      const res = await fetch('/api/admin/password', {
+      const res = await fetch(`${API_URL}/api/admin/password`, {
         method: 'PUT', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ current_password: current, new_password: newPass }),
         credentials: 'include'

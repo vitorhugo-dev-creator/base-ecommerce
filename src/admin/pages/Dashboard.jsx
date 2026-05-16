@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
+const API_URL = 'https://base-ecommerce-production.up.railway.app'
+
 export default function Dashboard() {
   const [stats, setStats] = useState(null)
   const [recentOrders, setRecentOrders] = useState([])
@@ -8,8 +10,8 @@ export default function Dashboard() {
 
   useEffect(() => {
     Promise.all([
-      fetch('/api/admin/dashboard', { credentials: 'include' }).then(r => r.json()),
-      fetch('/api/public/stats').then(r => r.json()),
+      fetch(`${API_URL}/api/admin/dashboard`, { credentials: 'include' }).then(r => r.json()),
+      fetch(`${API_URL}/api/public/stats`).then(r => r.json()),
     ]).then(([d, s]) => {
       setStats({ ...d, subscribers: s.subscribers, pageViews: s.last30days })
       setRecentOrders(d.recentOrders || [])

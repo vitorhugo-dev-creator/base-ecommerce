@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
+const API_URL = 'https://base-ecommerce-production.up.railway.app'
+
 export default function Orders() {
   const [orders, setOrders] = useState([])
   const [search, setSearch] = useState('')
@@ -9,7 +11,7 @@ export default function Orders() {
   useEffect(() => { loadOrders() }, [])
 
   function loadOrders() {
-    fetch('/api/admin/orders', { credentials: 'include' }).then(r => { if (!r.ok) throw r; return r.json() }).then(setOrders).catch(() => {})
+    fetch(`${API_URL}/api/admin/orders`, { credentials: 'include' }).then(r => { if (!r.ok) throw r; return r.json() }).then(setOrders).catch(() => {})
   }
 
   const filtered = orders.filter(o =>
@@ -20,7 +22,7 @@ export default function Orders() {
   function closeModal() { setShowModal(false); setSelectedOrder(null) }
 
   async function saveStatus(order_status, payment_status) {
-    await fetch(`/api/admin/orders/${selectedOrder.id}`, {
+    await fetch(`${API_URL}/api/admin/orders/${selectedOrder.id}`, {
       method: 'PUT', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ order_status, payment_status }),
       credentials: 'include'

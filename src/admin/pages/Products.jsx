@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
+const API_URL = 'https://base-ecommerce-production.up.railway.app'
+
 export default function Products() {
   const [products, setProducts] = useState([])
   const [search, setSearch] = useState('')
@@ -12,7 +14,7 @@ export default function Products() {
   useEffect(() => { loadProducts() }, [])
 
   function loadProducts() {
-    fetch('/api/products?active=all').then(r => r.json()).then(setProducts)
+    fetch(`${API_URL}/api/products?active=all`).then(r => r.json()).then(setProducts)
   }
 
   const filtered = products.filter(p => !search || p.name.toLowerCase().includes(search.toLowerCase()))
@@ -33,7 +35,7 @@ export default function Products() {
       const fd = new FormData()
       Object.entries(form).forEach(([k, v]) => { if (k !== '_img') fd.append(k, v) })
       if (form._img) fd.append('image', form._img.get('image'))
-      const res = await fetch(editProduct ? `/api/admin/products/${editProduct.id}` : '/api/admin/products', { method: editProduct ? 'PUT' : 'POST', body: fd, credentials: 'include' })
+      const res = await fetch(editProduct ? `${API_URL}/api/admin/products/${editProduct.id}` : `${API_URL}/api/admin/products`, { method: editProduct ? 'PUT' : 'POST', body: fd, credentials: 'include' })
       const data = await res.json()
       if (data.success) { loadProducts(); closeModal(); showToast('Produto salvo!') }
       else showToast(data.error || 'Erro', 'error')
@@ -43,7 +45,7 @@ export default function Products() {
 
   async function deleteProduct(id) {
     if (!confirm('Excluir este produto?')) return
-    await fetch(`/api/admin/products/${id}`, { method: 'DELETE', credentials: 'include' })
+    await fetch(`${API_URL}/api/admin/products/${id}`, { method: 'DELETE', credentials: 'include' })
     loadProducts()
     showToast('Produto excluído')
   }

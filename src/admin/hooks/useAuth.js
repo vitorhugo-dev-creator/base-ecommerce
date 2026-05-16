@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react'
 
+const API_URL = 'https://base-ecommerce-production.up.railway.app'
+
 export function useAuth() {
   const [authenticated, setAuthenticated] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('/api/admin/check', { credentials: 'include' }).then(r => r.json()).then(d => {
+    fetch(`${API_URL}/api/admin/check`, { credentials: 'include' }).then(r => r.json()).then(d => {
       setAuthenticated(d.authenticated)
       setLoading(false)
     }).catch(() => { setAuthenticated(false); setLoading(false) })
   }, [])
 
   async function login(username, password) {
-    const res = await fetch('/api/admin/login', {
+    const res = await fetch(`${API_URL}/api/admin/login`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
       credentials: 'include'
@@ -23,7 +25,7 @@ export function useAuth() {
   }
 
   async function logout() {
-    await fetch('/api/admin/logout', { method: 'POST', credentials: 'include' })
+    await fetch(`${API_URL}/api/admin/logout`, { method: 'POST', credentials: 'include' })
     setAuthenticated(false)
   }
 
