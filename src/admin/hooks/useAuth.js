@@ -7,10 +7,30 @@ export function useAuth() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch(`${API_URL}/api/admin/check`, { credentials: 'include' }).then(r => r.json()).then(d => {
-      setAuthenticated(d.authenticated)
-      setLoading(false)
-    }).catch(() => { setAuthenticated(false); setLoading(false) })
+    // Retry logic para dar tempo ao CORS e session
+    let attempts = 0
+    const maxAttempts = 3
+
+    function checkAuth() {
+      fetch(`${API_URL}/api/admin/check`, { credentials: 'include' })
+        .then(r => r.json())
+        .then(d => {
+          setAuthenticated(!!d.authenticated)
+          setLoading(false)
+        })
+        .catch(err => {
+          console.log('Auth check failed:', err)
+          if (attempts < maxAttempts) {
+            attempts++
+            setTimeout(checkAuth, 1000)
+          } else {
+            setAuthenticated(false)
+            setLoading(false)
+          }
+        })
+    }
+
+    checkAuth()
   }, [])
 
   async function login(username, password) {
