@@ -8,3 +8,6 @@ public-react/
 *.db
 *.log
 cookies*.txt
+
+# Local Netlify folder
+.netlify

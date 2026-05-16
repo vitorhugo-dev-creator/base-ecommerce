@@ -25,7 +25,7 @@ export default function Navbar() {
   return (
     <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
       <div className="container navbar__inner">
-        <a href="/vitordev" className="navbar__brand">
+        <a href="/" className="navbar__brand">
           <span className="navbar__logo">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
@@ -36,13 +36,13 @@ export default function Navbar() {
         </a>
 
         <div className="navbar__links">
-          <a href="/vitordev" className={`navbar__link ${location.pathname === '/vitordev' ? 'active' : ''}`}>
+          <a href="/" className={`navbar__link ${location.pathname === '/' ? 'active' : ''}`}>
             Início
           </a>
-          <a href="/vitordev/catalogo" className={`navbar__link ${location.pathname.includes('/catalogo') ? 'active' : ''}`}>
+          <a href="/catalogo" className={`navbar__link ${location.pathname.includes('/catalogo') ? 'active' : ''}`}>
             Catálogo
           </a>
-          <a href="/vitordev/rastreio" className={`navbar__link ${location.pathname.includes('/rastreio') ? 'active' : ''}`}>
+          <a href="/rastreio" className={`navbar__link ${location.pathname.includes('/rastreio') ? 'active' : ''}`}>
             Rastreio
           </a>
         </div>

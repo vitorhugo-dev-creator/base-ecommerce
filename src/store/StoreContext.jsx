@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 
-const API_URL = import.meta.env.VITE_API_URL || ''
+const API_URL = 'https://base-ecommerce-production.up.railway.app'
 
 const StoreContext = createContext()
 

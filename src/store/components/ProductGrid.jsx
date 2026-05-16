@@ -22,7 +22,7 @@ export default function ProductGrid({ onSelect }) {
             <span className="section-label">Novidades</span>
             <h2 className="section-title">Produtos em Destaque</h2>
           </div>
-          <a href="/vitordev/catalogo" className="section-link">
+          <a href="/catalogo" className="section-link">
             Ver todos
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="5" y1="12" x2="19" y2="12"/>

@@ -32,14 +32,14 @@ export default function Hero() {
           </p>
 
           <div className="hero__actions">
-            <a href="/vitordev/catalogo" className="btn-hero">
+            <a href="/catalogo" className="btn-hero">
               <span>Explorar Catálogo</span>
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="5" y1="12" x2="19" y2="12"/>
                 <polyline points="12 5 19 12 12 19"/>
               </svg>
             </a>
-            <a href="/vitordev/rastreio" className="btn-ghost-hero">
+            <a href="/rastreio" className="btn-ghost-hero">
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="11" cy="11" r="8"/>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"/>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { StoreProvider, useStore } from './StoreContext'
 
-const API_URL = import.meta.env.VITE_API_URL || ''
+const API_URL = 'https://base-ecommerce-production.up.railway.app'
 import { useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'

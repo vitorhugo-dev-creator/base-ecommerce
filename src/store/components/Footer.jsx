@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useStore } from '../StoreContext'
 
-const API_URL = import.meta.env.VITE_API_URL || ''
+const API_URL = 'https://base-ecommerce-production.up.railway.app'
 
 export default function Footer() {
   const { settings } = useStore()
@@ -71,7 +71,7 @@ export default function Footer() {
             ['/', 'Início'], ['/catalogo', 'Catálogo'], ['/rastreio', 'Rastrear Pedido']
           ].map(([path, label]) => (
             <React.Fragment key={path}>
-              <a href={`/vitordev${path}`} style={{
+              <a href={path} style={{
                 fontSize: '0.875rem', fontWeight: 500, color: 'var(--text-secondary)',
                 transition: 'color 0.2s', padding: '0.25rem 0.5rem'
               }}

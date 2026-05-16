@@ -1,7 +1,7 @@
 import React from 'react'
 import { useStore } from '../context/StoreContext'
 
-const API_URL = import.meta.env.VITE_API_URL || ''
+const API_URL = 'https://base-ecommerce-production.up.railway.app'
 
 export default function CartDrawer() {
   const { cart, cartOpen, setCartOpen, removeFromCart, updateQty, clearCart, cartTotal } = useStore()
