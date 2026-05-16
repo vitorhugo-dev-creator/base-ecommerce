@@ -17,13 +17,22 @@ const nodemailer = require('nodemailer');
 const app = express();
 const PORT = process.env.PORT || 3002;
 
-// CORS - permitir todas as origens em produção
+// CORS - permitir origens do frontend
+const ALLOWED_ORIGINS = [
+  'https://base-ecommerce.netlify.app',
+  'http://localhost:5173',
+  'http://localhost:3002'
+]
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  if (req.method === 'OPTIONS') return res.sendStatus(200);
-  next();
+  const origin = req.headers.origin
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin)
+    res.header('Access-Control-Allow-Credentials', 'true')
+  }
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  if (req.method === 'OPTIONS') return res.sendStatus(200)
+  next()
 });
 
 // Rate limiting simples em memória (5 tentativas/minuto por IP)
@@ -285,6 +294,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Servir assets do admin via prefixo /admin-assets
 app.use('/admin-assets', express.static(path.join(__dirname, 'admin')));
 
+const isProduction = process.env.NODE_ENV === 'production'
 app.use(session({
   secret: process.env.SESSION_SECRET || 'fallback-secret-troque-isso',
   resave: false,
@@ -292,8 +302,8 @@ app.use(session({
   cookie: {
     maxAge: 24 * 60 * 60 * 1000,
     httpOnly: true,
-    sameSite: 'lax',
-    secure: false
+    sameSite: isProduction ? 'none' : 'lax',
+    secure: isProduction
   }
 }));
 
