@@ -10,6 +10,6 @@ export default function AdminApp() {
       <div className="loading-spinner" />
     </div>
   )
-  if (!authenticated) return <Navigate to="/vitordev/admin/login" replace />
+  if (!authenticated) return <Navigate to="/admin/login" replace />
   return null
 }
