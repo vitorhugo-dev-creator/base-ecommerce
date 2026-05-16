@@ -20,10 +20,13 @@ const PORT = process.env.PORT || 3002;
 // CORS - permitir origens do frontend com credentials
 app.use((req, res, next) => {
   const origin = req.headers.origin
-  // Permitir Netlify e localhost
-  if (origin && (origin.includes('netlify.app') || origin.includes('localhost'))) {
+  // Permitir qualquer origem de desenvolvimento ou produção conhecida
+  if (origin && (origin.includes('netlify.app') || origin.includes('railway.app') || origin.includes('localhost'))) {
     res.header('Access-Control-Allow-Origin', origin)
     res.header('Access-Control-Allow-Credentials', 'true')
+  } else if (!origin) {
+    // Sem origin (como curl), permitir tudo
+    res.header('Access-Control-Allow-Origin', '*')
   }
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
