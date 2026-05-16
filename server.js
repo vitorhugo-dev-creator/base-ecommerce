@@ -17,15 +17,11 @@ const nodemailer = require('nodemailer');
 const app = express();
 const PORT = process.env.PORT || 3002;
 
-// CORS - permitir origens do frontend
-const ALLOWED_ORIGINS = [
-  'https://base-ecommerce.netlify.app',
-  'http://localhost:5173',
-  'http://localhost:3002'
-]
+// CORS - permitir origens do frontend com credentials
 app.use((req, res, next) => {
   const origin = req.headers.origin
-  if (ALLOWED_ORIGINS.includes(origin)) {
+  // Permitir Netlify e localhost
+  if (origin && (origin.includes('netlify.app') || origin.includes('localhost'))) {
     res.header('Access-Control-Allow-Origin', origin)
     res.header('Access-Control-Allow-Credentials', 'true')
   }
