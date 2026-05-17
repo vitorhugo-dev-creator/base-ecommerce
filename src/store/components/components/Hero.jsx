@@ -76,19 +76,19 @@ export default function Hero() {
           opacity: 0.4;
         }
         .hero__orb--1 {
-          width: 600px; height: 600px;
+          width: 300px; height: 300px;
           background: radial-gradient(circle, rgba(224,112,64,0.5) 0%, transparent 70%);
           top: -20%; left: -10%;
           animation: float1 8s ease-in-out infinite;
         }
         .hero__orb--2 {
-          width: 400px; height: 400px;
+          width: 250px; height: 250px;
           background: radial-gradient(circle, rgba(192,85,47,0.4) 0%, transparent 70%);
           top: 30%; right: -5%;
           animation: float2 10s ease-in-out infinite;
         }
         .hero__orb--3 {
-          width: 300px; height: 300px;
+          width: 180px; height: 180px;
           background: radial-gradient(circle, rgba(255,122,64,0.3) 0%, transparent 70%);
           bottom: -10%; left: 40%;
           animation: float3 7s ease-in-out infinite;

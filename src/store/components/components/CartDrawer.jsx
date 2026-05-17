@@ -219,7 +219,7 @@ export default function CartDrawer() {
           backdrop-filter: blur(4px); animation: fadeIn 0.2s ease;
         }
         .cart-drawer {
-          position: fixed; right: 0; top: 0; bottom: 0; width: 420px; max-width: 100vw;
+          position: fixed; right: 0; top: 0; bottom: 0; width: 100%; max-width: 420px;
           background: var(--bg2); border-left: 1px solid var(--border2);
           z-index: 501; display: flex; flex-direction: column;
           animation: slideInRight 0.3s cubic-bezier(0.4,0,0.2,1);
