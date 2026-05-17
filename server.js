@@ -282,13 +282,18 @@ async function sendOrderEmail(order, settings) {
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
-// Servir pasta pública (loja — fallback para HTML estático / uploads de produtos)
-// ORDEM IMPORTA: public-react primeiro para sobrescrever o index.html do public
+// Servir uploads de produtos
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
+app.use('/products', express.static(path.join(__dirname, 'public/products')));
+
+// Servir React (SPA) - Railway
 const reactBuildPath = path.join(__dirname, 'public-react');
 if (fs.existsSync(reactBuildPath)) {
-  app.use('/vitordev', express.static(reactBuildPath));
+  app.use(express.static(reactBuildPath));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(reactBuildPath, 'index.html'));
+  });
 }
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Servir assets do admin via prefixo /admin-assets
 app.use('/admin-assets', express.static(path.join(__dirname, 'admin')));
