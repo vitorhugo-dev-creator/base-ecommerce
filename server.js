@@ -309,13 +309,28 @@ app.use(session({
 // ============================================================
 // HELPERS
 // ============================================================
+// Middleware: check session OR token
 function requireAdmin(req, res, next) {
-  if (req.session && req.session.adminId) return next();
-  // Para rotas API, retorna JSON (SPA); para páginas legado, redirect
-  if (req.xhr || req.headers.accept?.includes('json') || req.path.startsWith('/api/')) {
-    return res.status(401).json({ error: 'Não autenticado', redirect: '/vitordev/admin/login' });
+  // Check session (legacy)
+  if (req.session && req.session.adminId) {
+    req.adminId = req.session.adminId
+    return next()
   }
-  res.redirect('/vitordev/admin/login');
+  // Check token (SPA)
+  const authHeader = req.headers.authorization
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.slice(7)
+    const userId = adminTokens.get(token)
+    if (userId) {
+      req.adminId = userId
+      return next()
+    }
+  }
+  // No auth
+  if (req.xhr || req.headers.accept?.includes('json') || req.path.startsWith('/api/')) {
+    return res.status(401).json({ error: 'Não autenticado', redirect: '/admin/login' });
+  }
+  res.redirect('/admin/login');
 }
 
 function getSettings() {
@@ -384,6 +399,9 @@ app.get('/admin/*', requireAdmin, (req, res) => res.sendFile(path.join(__dirname
 // ============================================================
 // API — AUTH
 // ============================================================
+// Simple token-based auth for SPA
+const adminTokens = new Map() // token -> userId
+
 app.post('/api/admin/login', (req, res) => {
   const ip = req.ip || req.connection.remoteAddress || 'unknown';
   const now = Date.now();
@@ -407,12 +425,23 @@ app.post('/api/admin/login', (req, res) => {
     return res.status(401).json({ error: 'Credenciais inválidas' });
   }
   loginAttempts.set(ip, []);
-  req.session.adminId = user.id;
-  res.json({ success: true });
+
+  // Generate token
+  const token = uuidv4()
+  adminTokens.set(token, user.id)
+
+  res.json({ success: true, token });
 });
 
 app.post('/api/admin/logout', (req, res) => {
-  req.session.destroy();
+  // Clear session
+  if (req.session) req.session.destroy()
+  // Clear token
+  const authHeader = req.headers.authorization
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.slice(7)
+    adminTokens.delete(token)
+  }
   res.json({ success: true });
 });
 
@@ -513,7 +542,10 @@ app.get('/api/public/analytics', (req, res) => {
 });
 
 app.get('/api/admin/check', (req, res) => {
-  res.json({ authenticated: !!(req.session && req.session.adminId) });
+  const authenticated = !!(req.session && req.session.adminId) ||
+    (req.headers.authorization && req.headers.authorization.startsWith('Bearer ') &&
+     adminTokens.get(req.headers.authorization.slice(7)))
+  res.json({ authenticated });
 });
 
 // ============================================================

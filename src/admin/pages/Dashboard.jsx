@@ -2,15 +2,21 @@ import React, { useState, useEffect } from 'react'
 
 const API_URL = 'https://base-ecommerce-production.up.railway.app'
 
+function getToken() {
+  return localStorage.getItem('admin_token')
+}
+
 export default function Dashboard() {
   const [stats, setStats] = useState(null)
   const [recentOrders, setRecentOrders] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
+  const authHeader = () => ({ 'Authorization': `Bearer ${getToken()}` })
+
   useEffect(() => {
     Promise.all([
-      fetch(`${API_URL}/api/admin/dashboard`, { credentials: 'include' }).then(r => r.json()),
+      fetch(`${API_URL}/api/admin/dashboard`, { headers: authHeader() }).then(r => r.json()),
       fetch(`${API_URL}/api/public/stats`).then(r => r.json()),
     ]).then(([d, s]) => {
       setStats({ ...d, subscribers: s.subscribers, pageViews: s.last30days })

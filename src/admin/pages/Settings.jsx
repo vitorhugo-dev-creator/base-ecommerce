@@ -2,6 +2,14 @@ import React, { useState, useEffect } from 'react'
 
 const API_URL = 'https://base-ecommerce-production.up.railway.app'
 
+function getToken() {
+  return localStorage.getItem('admin_token')
+}
+
+function authHeader() {
+  return { 'Authorization': `Bearer ${getToken()}` }
+}
+
 export default function Settings() {
   const [form, setForm] = useState({
     store_name: '', store_description: '', hero_title: '', hero_subtitle: '',
@@ -28,9 +36,9 @@ export default function Settings() {
     setSaving(true)
     try {
       const res = await fetch(`${API_URL}/api/admin/settings`, {
-        method: 'PUT', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-        credentials: 'include'
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', ...authHeader() },
+        body: JSON.stringify(form)
       })
       if (res.ok) showToast('Configuracoes salvas!')
       else showToast('Erro ao salvar', 'error')
@@ -46,9 +54,9 @@ export default function Settings() {
     setSaving(true)
     try {
       const res = await fetch(`${API_URL}/api/admin/password`, {
-        method: 'PUT', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ current_password: current, new_password: newPass }),
-        credentials: 'include'
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', ...authHeader() },
+        body: JSON.stringify({ current_password: current, new_password: newPass })
       })
       const data = await res.json()
       if (data.success) { showToast('Senha alterada!'); setPasswords({ current: '', newPass: '', confirm: '' }) }
