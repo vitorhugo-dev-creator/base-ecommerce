@@ -395,12 +395,6 @@ app.get('/rastreio', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'order-status.html'));
 });
 
-// Admin legado (mantido para compatibilidade)
-app.get('/admin/login', (req, res) => res.sendFile(path.join(__dirname, 'admin', 'admin-login.html')));
-app.get('/admin', requireAdmin, (req, res) => res.sendFile(path.join(__dirname, 'admin', 'admin.html')));
-app.get('/admin/analytics', requireAdmin, (req, res) => res.sendFile(path.join(__dirname, 'admin', 'crm.html')));
-app.get('/admin/*', requireAdmin, (req, res) => res.sendFile(path.join(__dirname, 'admin', 'admin.html')));
-
 // ============================================================
 // API — AUTH
 // ============================================================
