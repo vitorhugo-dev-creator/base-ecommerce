@@ -83,24 +83,24 @@ export default function Hero() {
           opacity: 0.5;
         }
         .hero__blob--1 {
-          width: 600px;
-          height: 600px;
+          width: 300px;
+          height: 300px;
           background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
           top: -10%;
           left: -5%;
           animation: blob 12s ease-in-out infinite;
         }
         .hero__blob--2 {
-          width: 500px;
-          height: 500px;
+          width: 250px;
+          height: 250px;
           background: radial-gradient(circle, var(--ice) 0%, transparent 70%);
           bottom: 0;
           right: 10%;
           animation: blob 15s ease-in-out infinite reverse;
         }
         .hero__blob--3 {
-          width: 350px;
-          height: 350px;
+          width: 180px;
+          height: 180px;
           background: radial-gradient(circle, var(--ice-dark) 0%, transparent 70%);
           top: 40%;
           right: 30%;
@@ -208,8 +208,8 @@ export default function Hero() {
         }
         .hero__visual {
           position: relative;
-          width: 400px;
-          height: 400px;
+          width: 280px;
+          height: 280px;
         }
         .hero__shape {
           position: absolute;

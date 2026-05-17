@@ -34,7 +34,7 @@ export default function CartDrawer() {
   return (
     <>
       <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 500, backdropFilter: 'blur(4px)', animation: 'fadeIn 0.2s ease' }} onClick={() => setCartOpen(false)} />
-      <div style={{ position: 'fixed', right: 0, top: 0, bottom: 0, width: 420, maxWidth: '100vw', background: 'var(--bg2)', borderLeft: '1px solid var(--border2)', zIndex: 501, display: 'flex', flexDirection: 'column', animation: 'slideInRight 0.3s cubic-bezier(0.4,0,0.2,1)', boxShadow: '-8px 0 48px rgba(0,0,0,0.4)' }}>
+      <div style={{ position: 'fixed', right: 0, top: 0, bottom: 0, width: '100%', maxWidth: 420, background: 'var(--bg2)', borderLeft: '1px solid var(--border2)', zIndex: 501, display: 'flex', flexDirection: 'column', animation: 'slideInRight 0.3s cubic-bezier(0.4,0,0.2,1)', boxShadow: '-8px 0 48px rgba(0,0,0,0.4)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontFamily: "'Playfair Display',serif", fontSize: '1.1rem', fontWeight: 700 }}>
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--accent)" strokeWidth="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
@@ -151,6 +151,10 @@ export default function CartDrawer() {
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(12px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 480px) {
+          .cart-drawer-inner { padding: 0 1rem !important; }
+          .cart-item { padding: 0.5rem !important; }
         }
       `}</style>
     </>
