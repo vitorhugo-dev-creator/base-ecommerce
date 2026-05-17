@@ -95,6 +95,10 @@ body::before {
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
 .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+
+@media (max-width: 640px) {
+  .container { padding: 0 1rem; }
+}
 h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.25; letter-spacing: -0.02em; }
 a { color: inherit; text-decoration: none; }
 

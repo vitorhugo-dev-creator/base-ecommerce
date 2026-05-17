@@ -79,9 +79,15 @@ export default function ProductGrid({ onSelect }) {
         }
         @media (max-width: 640px) {
           .products-grid {
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
           }
+          .products-section { padding: 3rem 0; }
+          .products-section__header { flex-direction: column; align-items: flex-start; gap: 1rem; margin-bottom: 2rem; }
+          .products-section__header .section-title { font-size: 1.5rem; }
+        }
+        @media (max-width: 400px) {
+          .products-grid { grid-template-columns: 1fr; }
         }
       `}</style>
     </section>

@@ -90,6 +90,15 @@ export default function Footer() {
           Feito à mão com intenção — {new Date().getFullYear()}
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 640px) {
+          footer { padding: 3rem 0 2rem !important; margin-top: 2rem !important; }
+          footer form { flex-direction: column !important; }
+          footer form input { width: 100% !important; }
+          footer form button { width: 100% !important; }
+        }
+      `}</style>
     </footer>
   )
 }

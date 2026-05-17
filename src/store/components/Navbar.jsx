@@ -191,6 +191,12 @@ export default function Navbar() {
         }
         @media (max-width: 768px) {
           .navbar__links { display: none; }
+          .navbar__inner { height: 64px; }
+          .navbar__name { font-size: 1.1rem; }
+          .navbar__cart { width: 40px; height: 40px; }
+        }
+        @media (max-width: 480px) {
+          .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,13,18,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
         }
       `}</style>
     </nav>

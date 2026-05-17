@@ -230,6 +230,12 @@ export default function ProductCard({ product, onSelect, index = 0 }) {
           color: var(--text-muted);
           text-decoration: line-through;
         }
+        @media (max-width: 640px) {
+          .product-card__body { padding: 1rem; }
+          .product-card__name { font-size: 0.95rem; }
+          .product-card__price { font-size: 1rem; }
+          .product-card__tag { top: 0.5rem; left: 0.5rem; font-size: 0.6rem; padding: 0.25rem 0.5rem; }
+        }
       `}</style>
     </article>
   )

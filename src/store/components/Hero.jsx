@@ -269,12 +269,20 @@ export default function Hero() {
           .hero__content {
             grid-template-columns: 1fr;
             text-align: center;
-            padding: 3rem 2rem;
+            padding: 2rem 1rem;
+            gap: 2rem;
           }
           .hero__left { max-width: 100%; }
           .hero__eyebrow { justify-content: center; }
-          .hero__actions { justify-content: center; }
+          .hero__actions { justify-content: center; flex-direction: column; }
           .hero__right { display: none; }
+          .hero { min-height: auto; padding-top: 100px; padding-bottom: 3rem; }
+          .hero__title { font-size: 2rem !important; }
+          .hero__desc { font-size: 1rem; }
+        }
+        @media (max-width: 480px) {
+          .hero__title { font-size: 1.75rem !important; }
+          .btn-hero, .btn-ghost-hero { width: 100%; justify-content: center; }
         }
       `}</style>
     </section>
