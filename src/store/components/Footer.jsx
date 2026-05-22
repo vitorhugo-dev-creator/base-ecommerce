@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useStore } from '../StoreContext'
 
-const API_URL = 'https://base-ecommerce-production.up.railway.app'
+const API_URL = import.meta.env.VITE_API_URL || ''
 
 export default function Footer() {
   const { settings } = useStore()
@@ -71,13 +72,13 @@ export default function Footer() {
             ['/', 'Início'], ['/catalogo', 'Catálogo'], ['/rastreio', 'Rastrear Pedido']
           ].map(([path, label]) => (
             <React.Fragment key={path}>
-              <a href={path} style={{
+              <Link to={path} style={{
                 fontSize: '0.875rem', fontWeight: 500, color: 'var(--text-secondary)',
                 transition: 'color 0.2s', padding: '0.25rem 0.5rem'
               }}
               onMouseEnter={e => e.target.style.color = 'var(--accent)'}
               onMouseLeave={e => e.target.style.color = 'var(--text-secondary)'}
-              >{label}</a>
+              >{label}</Link>
               <span style={{ color: 'var(--border2)' }}>·</span>
             </React.Fragment>
           ))}

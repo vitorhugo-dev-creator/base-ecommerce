@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
-const API_URL = 'https://base-ecommerce-production.up.railway.app'
+const API_URL = import.meta.env.VITE_API_URL || ''
 
 function getToken() {
   return localStorage.getItem('admin_token')
@@ -41,17 +41,21 @@ export function useAuth() {
   }, [])
 
   async function login(username, password) {
-    const res = await fetch(`${API_URL}/api/admin/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    })
-    const data = await res.json()
-    if (data.success && data.token) {
-      setToken(data.token)
-      setAuthenticated(true)
+    try {
+      const res = await fetch(`${API_URL}/api/admin/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      })
+      const data = await res.json()
+      if (data.success && data.token) {
+        setToken(data.token)
+        setAuthenticated(true)
+      }
+      return data
+    } catch {
+      return { success: false, error: 'Erro de conexão com o servidor' }
     }
-    return data
   }
 
   async function logout() {

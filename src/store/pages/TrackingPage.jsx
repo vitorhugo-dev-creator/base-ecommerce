@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+const API_URL = import.meta.env.VITE_API_URL || ''
+
 const STATUS_INFO = {
   pending: { label: 'Aguardando pagamento', color: '#ffc200', bg: 'rgba(255,194,0,0.15)' },
   paid: { label: 'Pago', color: '#00cc66', bg: 'rgba(0,204,102,0.15)' },
@@ -19,7 +21,7 @@ export default function TrackingPage() {
     if (!code.trim()) return
     setLoading(true); setError(''); setOrder(null)
     try {
-      const res = await fetch(`/api/orders/track/${code.trim()}`)
+      const res = await fetch(`${API_URL}/api/orders/track/${code.trim()}`)
       if (!res.ok) throw new Error()
       setOrder(await res.json())
     } catch { setError('Pedido não encontrado. Verifique o código e tente novamente.') }
@@ -30,7 +32,7 @@ export default function TrackingPage() {
   const statusOrder = { pending: 0, paid: 1, shipped: 2, delivered: 3, cancelled: -1 }
 
   return (
-    <div style={{ paddingTop: 100, paddingBottom: '5rem' }}>
+    <div style={{ paddingTop: 100, paddingBottom: '5rem' }} className="tracking-page">
       <div className="container">
         <div style={{ marginBottom: '2.5rem' }}>
           <span className="section-label">Rastreio</span>
@@ -38,7 +40,7 @@ export default function TrackingPage() {
         </div>
 
         <form onSubmit={searchOrder} style={{ maxWidth: 600, margin: '0 auto 2rem' }}>
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', gap: '0.75rem' }} className="tracking-form">
             <input type="text" placeholder="Digite o código do pedido (ex: PED-XXXX)" value={code} onChange={e => setCode(e.target.value)} style={{ flex: 1 }} />
             <button type="submit" disabled={loading} className="btn-primary">
               {loading ? <div className="loading-spinner" style={{ width: 16, height: 16, borderWidth: 2 }} />
@@ -67,7 +69,7 @@ export default function TrackingPage() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', position: 'relative', padding: '1.5rem 0' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', position: 'relative', padding: '1.5rem 0' }} className="tracking-stepper">
               <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: 2, background: 'var(--border2)', transform: 'translateY(-50%)', zIndex: 0 }} />
               {['pending', 'paid', 'shipped', 'delivered'].map((s, i) => {
                 const isActive = statusOrder[order.order_status] >= i
@@ -80,7 +82,7 @@ export default function TrackingPage() {
               })}
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }} className="tracking-info-grid">
               {[['Cliente', order.customer_name], ['Forma de Pagamento', order.payment_method === 'pix' ? 'PIX' : 'Via WhatsApp'], ['Data', new Date(order.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })], ['Endereço', order.customer_address || '—']].map(([label, value]) => (
                 <div key={label} style={{ padding: '1rem', background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: 'var(--radius-sm)', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
                   <span style={{ fontSize: '0.65rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)' }}>{label}</span>
@@ -115,6 +117,18 @@ export default function TrackingPage() {
           </div>
         )}
       </div>
+
+      <style>{`
+        @media (max-width: 640px) {
+          .tracking-page { padding-top: 80px !important; }
+          .tracking-form { flex-direction: column !important; }
+          .tracking-form button { width: 100% !important; justify-content: center !important; }
+          .tracking-info-grid { grid-template-columns: 1fr !important; }
+          .tracking-stepper { overflow-x: auto !important; gap: 0.5rem !important; padding: 1rem 0.5rem !important; }
+          .tracking-stepper > div { min-width: 70px !important; }
+          .tracking-stepper > div span { font-size: 0.6rem !important; }
+        }
+      `}</style>
     </div>
   )
 }

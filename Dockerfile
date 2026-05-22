@@ -8,9 +8,10 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci
 
 COPY . .
+RUN npm run build:store
 
 # Garantir pastas de dados
 RUN mkdir -p data public/uploads public/products

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const API_URL = 'https://base-ecommerce-production.up.railway.app'
+const API_URL = import.meta.env.VITE_API_URL || ''
 
 function getToken() {
   return localStorage.getItem('admin_token')
@@ -16,8 +16,8 @@ export default function Dashboard() {
 
   useEffect(() => {
     Promise.all([
-      fetch(`${API_URL}/api/admin/dashboard`, { headers: authHeader() }).then(r => r.json()),
-      fetch(`${API_URL}/api/public/stats`).then(r => r.json()),
+      fetch(`${API_URL}/api/admin/dashboard`, { headers: authHeader() }).then(r => { if (!r.ok) throw new Error('Falha ao carregar dashboard'); return r.json() }),
+      fetch(`${API_URL}/api/public/stats`).then(r => { if (!r.ok) throw new Error('Falha ao carregar stats'); return r.json() }),
     ]).then(([d, s]) => {
       setStats({ ...d, subscribers: s.subscribers, pageViews: s.last30days })
       setRecentOrders(d.recentOrders || [])

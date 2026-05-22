@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { useStore } from '../StoreContext'
 
 export default function Hero() {
@@ -32,20 +33,19 @@ export default function Hero() {
           </p>
 
           <div className="hero__actions">
-            <a href="/catalogo" className="btn-hero">
+            <Link to="/catalogo" className="btn-hero">
               <span>Explorar Catálogo</span>
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="5" y1="12" x2="19" y2="12"/>
                 <polyline points="12 5 19 12 12 19"/>
               </svg>
-            </a>
-            <a href="/rastreio" className="btn-ghost-hero">
+            </Link>
+            <Link to="/rastreio" className="btn-ghost-hero">
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="11" cy="11" r="8"/>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
               </svg>
               Rastrear Pedido
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -174,12 +174,12 @@ export default function Hero() {
           font-weight: 600;
           border-radius: var(--radius-full);
           transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-          box-shadow: var(--shadow-md), 0 0 0 0 rgba(196,131,106,0.4);
+          box-shadow: var(--shadow-md), 0 0 0 0 rgba(96,165,250,0.4);
         }
         .btn-hero:hover {
           background: var(--accent2);
           transform: translateY(-3px) scale(1.02);
-          box-shadow: var(--shadow-lg), 0 0 0 6px rgba(196,131,106,0.1);
+          box-shadow: var(--shadow-lg), 0 0 0 6px rgba(96,165,250,0.1);
         }
         .btn-hero svg { transition: transform 0.25s; }
         .btn-hero:hover svg { transform: translateX(5px); }
@@ -197,7 +197,7 @@ export default function Hero() {
           transition: all 0.35s ease;
         }
         .btn-ghost-hero:hover {
-          background: rgba(196,131,106,0.1);
+          background: rgba(96,165,250,0.1);
           border-color: var(--accent);
           color: var(--accent);
         }

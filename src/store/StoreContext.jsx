@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 
-const API_URL = 'https://base-ecommerce-production.up.railway.app'
+const API_URL = import.meta.env.VITE_API_URL || ''
 
 const StoreContext = createContext()
 
@@ -20,10 +20,10 @@ export function StoreProvider({ children }) {
   useEffect(() => {
     Promise.all([
       fetch(`${API_URL}/api/settings`).then(r => { if (!r.ok) throw r; return r.json() }),
-      fetch(`${API_URL}/api/products`).then(r => { if (!r.ok) throw r; return r.json() }),
+      fetch(`${API_URL}/api/products?limit=100`).then(r => { if (!r.ok) throw r; return r.json() }),
     ]).then(([settingsData, productsData]) => {
       setSettings(settingsData)
-      setProducts(productsData)
+      setProducts(productsData.products || productsData)
     }).catch(() => {})
   }, [])
 
@@ -44,7 +44,7 @@ export function StoreProvider({ children }) {
     setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 3500)
   }
 
-  const cartTotal = cart.reduce((s, i) => s + i.price * i.qty, 0)
+  const cartTotal = cart.reduce((s, i) => { const p = i.promo_percent > 0 ? i.price * (1 - i.promo_percent / 100) : i.price; return s + p * i.qty }, 0)
   const cartCount = cart.reduce((s, i) => s + i.qty, 0)
 
   return (

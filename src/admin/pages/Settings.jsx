@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const API_URL = 'https://base-ecommerce-production.up.railway.app'
+const API_URL = import.meta.env.VITE_API_URL || ''
 
 function getToken() {
   return localStorage.getItem('admin_token')
@@ -13,7 +13,7 @@ function authHeader() {
 export default function Settings() {
   const [form, setForm] = useState({
     store_name: '', store_description: '', hero_title: '', hero_subtitle: '',
-    store_whatsapp: '', store_pix_key: ''
+    store_whatsapp: '', store_pix_key: '', store_city: ''
   })
   const [saving, setSaving] = useState(false)
   const [toast, setToast] = useState(null)
@@ -23,7 +23,8 @@ export default function Settings() {
     fetch(`${API_URL}/api/settings`).then(r => r.json()).then(s => setForm({
       store_name: s.store_name || '', store_description: s.store_description || '',
       hero_title: s.hero_title || '', hero_subtitle: s.hero_subtitle || '',
-      store_whatsapp: s.store_whatsapp || '', store_pix_key: s.store_pix_key || ''
+      store_whatsapp: s.store_whatsapp || '', store_pix_key: s.store_pix_key || '',
+      store_city: s.store_city || ''
     }))
   }, [])
 
@@ -78,6 +79,7 @@ export default function Settings() {
           {[
             ['Descricao da Loja', 'store_description', 'text'], ['Titulo do Hero', 'hero_title', 'text'],
             ['Subtitulo do Hero', 'hero_subtitle', 'text'], ['Chave PIX', 'store_pix_key', 'text'],
+            ['Cidade (para PIX)', 'store_city', 'text'],
           ].map(([label, key, type]) => (
             <div key={key} className="full"><label>{label}</label><input type={type} value={form[key]} onChange={e => setForm(p => ({ ...p, [key]: e.target.value }))} /></div>
           ))}

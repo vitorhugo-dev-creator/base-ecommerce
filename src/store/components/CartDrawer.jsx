@@ -1,7 +1,7 @@
 import React from 'react'
 import { useStore } from '../StoreContext'
 
-const API_URL = 'https://base-ecommerce-production.up.railway.app'
+const API_URL = import.meta.env.VITE_API_URL || ''
 
 export default function CartDrawer() {
   const { cart, cartOpen, setCartOpen, removeFromCart, updateQty, clearCart, cartTotal } = useStore()
@@ -28,8 +28,8 @@ export default function CartDrawer() {
   if (!cartOpen) return null
 
   const hasDiscount = cart.some(i => i.promo_percent > 0)
-  const originalTotal = cart.reduce((s, i) => s + i.price * (i.promo_percent > 0 ? i.price / (1 - i.promo_percent / 100) : i.price), 0)
-  const discountTotal = originalTotal - cartTotal
+  const originalTotal = cart.reduce((s, i) => s + i.price * i.qty, 0)
+  const discountTotal = Math.max(0, originalTotal - cartTotal)
 
   return (
     <>
@@ -61,7 +61,7 @@ export default function CartDrawer() {
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name}</span>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.2rem' }}>
-                      <span style={{ fontSize: '0.8rem', color: 'var(--accent)', fontWeight: 600 }}>R$ {item.price.toFixed(2).replace('.', ',')}</span>
+                      <span style={{ fontSize: '0.8rem', color: 'var(--accent)', fontWeight: 600 }}>R$ {(item.promo_percent > 0 ? item.price * (1 - item.promo_percent / 100) : item.price).toFixed(2).replace('.', ',')}</span>
                       {item.promo_percent > 0 && (
                         <span style={{ fontSize: '0.65rem', fontWeight: 700, background: 'var(--accent)', color: '#fff', padding: '0.15rem 0.4rem', borderRadius: '100px', letterSpacing: '0.03em' }}>-{item.promo_percent}% OFF</span>
                       )}
@@ -92,7 +92,7 @@ export default function CartDrawer() {
                     <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)', fontWeight: 500 }}>Total</span>
                     <span style={{ fontFamily: "'Playfair Display',serif", fontSize: '1.4rem', fontWeight: 700 }}>R$ {cartTotal.toFixed(2).replace('.', ',')}</span>
                   </div>
-                  <button disabled={cart.length === 0} onClick={() => setCheckout(true)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', width: '100%', padding: '0.9rem', background: 'linear-gradient(135deg,var(--accent),var(--accent2))', color: '#fff', fontSize: '0.9rem', fontWeight: 700, border: 'none', borderRadius: 'var(--radius-sm)', cursor: 'pointer', transition: 'all 0.25s', boxShadow: '0 4px 16px rgba(224,112,64,0.3)', letterSpacing: '0.02em' }}>
+                    <button disabled={cart.length === 0} onClick={() => setCheckout(true)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', width: '100%', padding: '0.9rem', background: 'linear-gradient(135deg,var(--accent),var(--accent2))', color: '#fff', fontSize: '0.9rem', fontWeight: 700, border: 'none', borderRadius: 'var(--radius-sm)', cursor: 'pointer', transition: 'all 0.25s', boxShadow: '0 4px 16px rgba(96,165,250,0.3)', letterSpacing: '0.02em' }}>
                     <span>Finalizar Pedido</span>
                     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                   </button>
@@ -116,7 +116,7 @@ export default function CartDrawer() {
                     <label>Observações</label>
                     <textarea rows="2" placeholder="Alguma observação?" value={form.notes} onChange={e => setForm(p => ({ ...p, notes: e.target.value }))} />
                   </div>
-                  <button disabled={submitting} onClick={submitOrder} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', width: '100%', padding: '0.9rem', background: 'linear-gradient(135deg,var(--accent),var(--accent2))', color: '#fff', fontSize: '0.9rem', fontWeight: 700, border: 'none', borderRadius: 'var(--radius-sm)', cursor: 'pointer', transition: 'all 0.25s', boxShadow: '0 4px 16px rgba(224,112,64,0.3)' }}>
+                  <button disabled={submitting} onClick={submitOrder} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', width: '100%', padding: '0.9rem', background: 'linear-gradient(135deg,var(--accent),var(--accent2))', color: '#fff', fontSize: '0.9rem', fontWeight: 700, border: 'none', borderRadius: 'var(--radius-sm)', cursor: 'pointer', transition: 'all 0.25s', boxShadow: '0 4px 16px rgba(96,165,250,0.3)' }}>
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
                     {submitting ? 'Enviando...' : 'Confirmar Pedido'}
                   </button>

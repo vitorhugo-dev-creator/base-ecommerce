@@ -16,11 +16,11 @@ export default function CrmHeader() {
           </div>
         </div>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <a href="/vitordev" target="_blank" className="crm-link-btn">
+          <a href="/" target="_blank" className="crm-link-btn">
             <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             Ver Loja
           </a>
-          <a href="/vitordev/admin" className="crm-link-btn crm-link-btn--accent">
+          <a href="/admin" className="crm-link-btn crm-link-btn--accent">
             <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
             Admin
           </a>

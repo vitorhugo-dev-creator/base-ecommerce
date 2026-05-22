@@ -55,8 +55,9 @@ async function loadFeaturedProducts() {
   const container = document.getElementById('featured-products');
   if (!container) return;
   try {
-    const res = await fetch('/api/products?active=1');
-    allProducts = await res.json();
+    const res = await fetch('/api/products?active=1&limit=50');
+    const data = await res.json();
+    allProducts = data.products || data;
     const recent = allProducts.slice(0, 8);
     container.innerHTML = recent.length
       ? recent.map(renderProductCard).join('')
@@ -70,8 +71,9 @@ async function loadAllProducts() {
   const container = document.getElementById('products-grid');
   if (!container) return;
   try {
-    const res = await fetch('/api/products?active=1');
-    allProducts = await res.json();
+    const res = await fetch('/api/products?active=1&limit=100');
+    const data = await res.json();
+    allProducts = data.products || data;
     buildCategoryFilters();
     renderProductGrid(allProducts);
   } catch (e) {
@@ -342,4 +344,15 @@ function showToast(message) {
   toast.textContent = message;
   document.body.appendChild(toast);
   setTimeout(() => toast.remove(), 3000);
+}
+
+// ============================================================
+// NAVEGAÇÃO MOBILE
+// ============================================================
+function toggleNav() {
+  const links = document.getElementById('nav-links');
+  if (links) {
+    links.classList.toggle('open');
+    document.body.style.overflow = links.classList.contains('open') ? 'hidden' : '';
+  }
 }

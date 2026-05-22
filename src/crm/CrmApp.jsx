@@ -4,19 +4,24 @@ import CrmKPIs from './components/CrmKPIs'
 import CrmCharts from './components/CrmCharts'
 import CrmRankings from './components/CrmRankings'
 
+const API_URL = import.meta.env.VITE_API_URL || ''
+
 export default function CrmApp() {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     function load() {
-      Promise.all([
-        fetch('/api/public/analytics').then(r => r.json()),
-        fetch('/api/public/stats').then(r => r.json()),
-      ]).then(([analytics, stats]) => {
-        setData({ ...analytics, stats })
-        setLoading(false)
-      }).catch(() => { setLoading(false) })
+      fetch(`${API_URL}/api/public/analytics`).then(r => r.json())
+        .then(analytics => {
+          Promise.all([
+            Promise.resolve(analytics),
+            fetch(`${API_URL}/api/public/stats`).then(r => r.json()),
+          ]).then(([a, stats]) => {
+            setData({ ...a, stats })
+            setLoading(false)
+          })
+        }).catch(() => { setLoading(false) })
     }
     load()
     const interval = setInterval(load, 30000)
@@ -24,20 +29,11 @@ export default function CrmApp() {
   }, [])
 
   const stats = data?.stats || {}
-  const monthlyRevenue = data?.monthlyRevenue?.reduce((s, m) => s + (m.revenue || 0), 0) || 0
-  const totalOrders = data?.dailyOrders?.reduce((s, d) => s + d.orders, 0) || 0
-  const avgOrderValue = data?.avgOrderValue?.avg || 0
-  const convRate = (() => {
-    const cr = data?.conversionRate || {}
-    const total = (cr.paid || 0) + (cr.pending || 0)
-    return total > 0 ? ((cr.paid || 0) / total * 100) : 0
-  })()
+  const totalOrders = data?.dailyOrders?.reduce((s, d) => s + d.orders, 0) || data?.orderStatusDist?.reduce((s, d) => s + d.count, 0) || 0
 
   const allKpis = data ? [
-    { label: 'Receita Mensal', value: `R$ ${monthlyRevenue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, color: '#00f5a0', icon: <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg> },
     { label: 'Total Pedidos', value: totalOrders.toLocaleString('pt-BR'), color: '#00d4ff', icon: <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> },
-    { label: 'Ticket Medio', value: `R$ ${(avgOrderValue || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, color: '#ffc200', icon: <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> },
-    { label: 'Conversao', value: `${convRate.toFixed(1)}%`, color: '#ff2d78', icon: <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg> },
+    { label: 'Produtos Vendidos', value: data?.topProducts?.reduce((s, p) => s + p.total_qty, 0).toLocaleString('pt-BR') || '0', color: '#00f5a0', icon: <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg> },
     { label: 'Visitas (30d)', value: (stats.last30days || 0).toLocaleString('pt-BR'), color: '#a78bfa', icon: <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> },
     { label: 'Newsletter', value: (stats.subscribers || 0).toLocaleString('pt-BR'), color: '#34d399', icon: <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> },
   ] : null

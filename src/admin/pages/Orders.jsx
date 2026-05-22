@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const API_URL = 'https://base-ecommerce-production.up.railway.app'
+const API_URL = import.meta.env.VITE_API_URL || ''
 
 function getToken() {
   return localStorage.getItem('admin_token')
@@ -15,11 +15,17 @@ export default function Orders() {
   const [search, setSearch] = useState('')
   const [showModal, setShowModal] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState(null)
+  const [toast, setToast] = useState(null)
 
   useEffect(() => { loadOrders() }, [])
 
+  function showToast(msg, type = 'success') {
+    setToast({ msg, type })
+    setTimeout(() => setToast(null), 3000)
+  }
+
   function loadOrders() {
-    fetch(`${API_URL}/api/admin/orders`, { headers: authHeader() }).then(r => { if (!r.ok) throw r; return r.json() }).then(setOrders).catch(() => {})
+    fetch(`${API_URL}/api/admin/orders`, { headers: authHeader() }).then(r => { if (!r.ok) throw r; return r.json() }).then(d => setOrders(d.orders || [])).catch(() => showToast('Erro ao carregar pedidos', 'error'))
   }
 
   const filtered = orders.filter(o =>
@@ -30,13 +36,18 @@ export default function Orders() {
   function closeModal() { setShowModal(false); setSelectedOrder(null) }
 
   async function saveStatus(order_status, payment_status) {
-    await fetch(`${API_URL}/api/admin/orders/${selectedOrder.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', ...authHeader() },
-      body: JSON.stringify({ order_status, payment_status })
-    })
-    loadOrders()
-    closeModal()
+    try {
+      const res = await fetch(`${API_URL}/api/admin/orders/${selectedOrder.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', ...authHeader() },
+        body: JSON.stringify({ order_status, payment_status })
+      })
+      if (!res.ok) throw new Error('Erro ao atualizar status')
+      loadOrders()
+      closeModal()
+    } catch (e) {
+      alert(e.message || 'Erro de conexão')
+    }
   }
 
   const statusBadge = (status) => {
@@ -60,7 +71,7 @@ export default function Orders() {
               <tr key={o.id}>
                 <td style={{ fontFamily: 'monospace', color: 'var(--accent)', fontWeight: 700 }}>{o.order_code}</td>
                 <td>{o.customer_name}</td>
-                <td style={{ fontWeight: 600 }}>R$ {o.total.toFixed(2).replace('.', ',')}</td>
+                <td style={{ fontWeight: 600 }}>R$ {(o.total || 0).toFixed(2).replace('.', ',')}</td>
                 <td style={{ textTransform: 'uppercase', color: 'var(--text-muted)', fontSize: '0.8rem' }}>{o.payment_method}</td>
                 <td>{statusBadge(o.order_status)}</td>
                 <td style={{ color: 'var(--text-muted)' }}>{new Date(o.created_at).toLocaleDateString('pt-BR')}</td>

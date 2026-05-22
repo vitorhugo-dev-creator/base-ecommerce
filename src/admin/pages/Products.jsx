@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const API_URL = 'https://base-ecommerce-production.up.railway.app'
+const API_URL = import.meta.env.VITE_API_URL || ''
 
 function getToken() {
   return localStorage.getItem('admin_token')
@@ -15,20 +15,20 @@ export default function Products() {
   const [search, setSearch] = useState('')
   const [showModal, setShowModal] = useState(false)
   const [editProduct, setEditProduct] = useState(null)
-  const [form, setForm] = useState({ name: '', description: '', category: '', price: '', tags: '', promo_percent: '0', active: '1' })
+  const [form, setForm] = useState({ name: '', description: '', category: '', price: 0, tags: '', promo_percent: '0', active: '1', current_image: '' })
   const [saving, setSaving] = useState(false)
   const [toast, setToast] = useState(null)
 
   useEffect(() => { loadProducts() }, [])
 
   function loadProducts() {
-    fetch(`${API_URL}/api/products?active=all`).then(r => r.json()).then(setProducts)
+    fetch(`${API_URL}/api/products?active=all&limit=200`).then(r => { if (!r.ok) throw r; return r.json() }).then(d => setProducts(d.products || d)).catch(() => setToast({ msg: 'Erro ao carregar produtos', type: 'error' }))
   }
 
   const filtered = products.filter(p => !search || p.name.toLowerCase().includes(search.toLowerCase()))
 
-  function openNew() { setEditProduct(null); setForm({ name: '', description: '', category: '', price: '', tags: '', promo_percent: '0', active: '1' }); setShowModal(true) }
-  function openEdit(p) { setEditProduct(p); setForm({ name: p.name, description: p.description || '', category: p.category || '', price: p.price, tags: (p.tags || []).join(', '), promo_percent: p.promo_percent || '0', active: p.active ? '1' : '0' }); setShowModal(true) }
+  function openNew() { setEditProduct(null); setForm({ name: '', description: '', category: '', price: '', tags: '', promo_percent: '0', active: '1', current_image: '' }); setShowModal(true) }
+  function openEdit(p) { setEditProduct(p); setForm({ name: p.name, description: p.description || '', category: p.category || '', price: p.price, tags: (p.tags || []).join(', '), promo_percent: p.promo_percent || '0', active: p.active ? '1' : '0', current_image: p.image_url || '' }); setShowModal(true) }
   function closeModal() { setShowModal(false); setEditProduct(null) }
 
   function showToast(msg, type = 'success') {
@@ -53,9 +53,12 @@ export default function Products() {
 
   async function deleteProduct(id) {
     if (!confirm('Excluir este produto?')) return
-    await fetch(`${API_URL}/api/admin/products/${id}`, { method: 'DELETE', headers: authHeader() })
-    loadProducts()
-    showToast('Produto excluído')
+    try {
+      const res = await fetch(`${API_URL}/api/admin/products/${id}`, { method: 'DELETE', headers: authHeader() })
+      if (!res.ok) throw new Error('Erro ao excluir')
+      loadProducts()
+      showToast('Produto excluído')
+    } catch { showToast('Erro ao excluir produto', 'error') }
   }
 
   return (

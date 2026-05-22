@@ -1,8 +1,6 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
 
-export default function Sidebar({ currentPage, onNavigate, onLogout }) {
-  const navigate = useNavigate()
+export default function Sidebar({ currentPage, onNavigate, onLogout, sidebarOpen, onToggle }) {
   const navItems = [
     { key: 'dashboard', label: 'Dashboard', icon: <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> },
     { key: 'products', label: 'Produtos', icon: <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg> },
@@ -11,17 +9,26 @@ export default function Sidebar({ currentPage, onNavigate, onLogout }) {
   ]
 
   return (
-    <aside className="admin-sidebar">
-      <div className="sidebar-logo">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-          <polyline points="9 22 9 12 15 12 15 22"/>
-        </svg>
-        <div>
-          <span className="sidebar-name">Painel Admin</span>
-          <span className="sidebar-sub">Gerenciamento</span>
+    <aside className={`admin-sidebar ${sidebarOpen ? 'admin-sidebar--open' : ''}`}>
+      <div className="sidebar-header">
+        <div className="sidebar-logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <div>
+            <span className="sidebar-name">Painel Admin</span>
+            <span className="sidebar-sub">Gerenciamento</span>
+          </div>
         </div>
+        <button className="sidebar-toggle" onClick={onToggle} aria-label="Menu">
+          <span />
+          <span />
+          <span />
+        </button>
       </div>
+
+      {sidebarOpen && <div className="sidebar-backdrop" onClick={onToggle} />}
 
       <nav className="sidebar-nav">
         <div className="nav-section-label">Menu</div>
@@ -32,7 +39,7 @@ export default function Sidebar({ currentPage, onNavigate, onLogout }) {
           </div>
         ))}
         <div className="nav-section-label" style={{ marginTop: '1.25rem' }}>CRM</div>
-        <div className="nav-item" onClick={() => navigate('/crm')}>
+        <div className="nav-item" onClick={() => { window.location.href = '/crm' }}>
           <span className="nav-icon">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
           </span>

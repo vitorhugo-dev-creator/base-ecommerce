@@ -1,5 +1,5 @@
 import React from 'react'
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
 import Sidebar from './components/Sidebar'
 import Dashboard from './pages/Dashboard'
 import Products from './pages/Products'
@@ -7,16 +7,18 @@ import Orders from './pages/Orders'
 import Settings from './pages/Settings'
 import Login from './pages/Login'
 import { useAuth } from './hooks/useAuth'
-import { Navigate } from 'react-router-dom'
 
 function AdminLayout() {
   const navigate = useNavigate()
   const location = useLocation()
   const { logout } = useAuth()
+  const [sidebarOpen, setSidebarOpen] = React.useState(false)
 
-  const currentPage = location.pathname.split('/').pop() || 'dashboard'
+  const pageMap = { dashboard: 'dashboard', products: 'products', orders: 'orders', settings: 'settings' }
+  const raw = location.pathname.replace('/admin/', '').replace('/admin', '')
+  const currentPage = pageMap[raw] || 'dashboard'
 
-  function handleNav(page) { navigate(`/admin/${page}`) }
+  function handleNav(page) { setSidebarOpen(false); navigate(`/admin/${page}`) }
 
   async function doLogout() {
     await logout()
@@ -25,7 +27,7 @@ function AdminLayout() {
 
   return (
     <div className="admin-layout">
-      <Sidebar currentPage={currentPage} onNavigate={handleNav} onLogout={doLogout} />
+      <Sidebar currentPage={currentPage} onNavigate={handleNav} onLogout={doLogout} sidebarOpen={sidebarOpen} onToggle={() => setSidebarOpen(o => !o)} />
       <main className="admin-main">
         <div className="admin-topbar">
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', fontWeight: 600 }}>

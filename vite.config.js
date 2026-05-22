@@ -8,7 +8,7 @@ export default defineConfig({
   root: 'src',
   build: {
     outDir: '../public-react',
-    emptyOutDir: false,
+    emptyOutDir: true,
   },
   resolve: {
     alias: { '@': path.resolve(__dirname, 'src') }

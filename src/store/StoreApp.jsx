@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { StoreProvider, useStore } from './StoreContext'
 
-const API_URL = 'https://base-ecommerce-production.up.railway.app'
 import { useLocation } from 'react-router-dom'
+const API_URL = import.meta.env.VITE_API_URL || ''
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import ProductGrid from './components/ProductGrid'
@@ -24,7 +24,7 @@ function StoreApp() {
       sessionStorage.setItem('_tracked', '1')
       fetch(`${API_URL}/api/track`).catch(() => {})
     }
-  }, [settings])
+  }, [settings, location.pathname])
 
   const isCatalog = location.pathname.includes('/catalogo')
   const isTracking = location.pathname.includes('/rastreio')

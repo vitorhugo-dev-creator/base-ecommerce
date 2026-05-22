@@ -10,3 +10,6 @@ cookies*.txt
 
 # Local Netlify folder
 .netlify
+
+# Build output
+public-react/
